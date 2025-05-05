@@ -1,2 +1,3 @@
 # Task1_SD
-# Quinatan conseguido conectar con el linux asdfasfasdf
+05/05/2025:
+    - REDIS añadido y acabado
