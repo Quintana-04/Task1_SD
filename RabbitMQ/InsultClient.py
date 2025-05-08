@@ -21,13 +21,17 @@ def close_connection(connection):
 connection = create_connection()
 channel = create_channel(connection)
 
-# Declara la cola
-declare_queue(channel)
+# Declara las colas
+declare_queue(channel, 'insults_to_censor')
+declare_queue(channel, 'texts_to_filter')
 
-# Publica un mensaje
-queue_name= 'hello'
-messages = ["puto", "cabron", "payaso"]
-publish_message(channel, queue_name, messages)
+# Publica los insultos a censurar
+insults_to_censor = ["puto", "cabron", "payaso"]
+publish_message(channel, 'insults_to_censor', insults_to_censor)
+
+# Publica los textos para filtrar
+texts_to_filter = ["Eres un puto tonto", "Este cabron no para de hablar", "Ese payaso me hace reir"]
+publish_message(channel, 'texts_to_filter', texts_to_filter)
 
 # Cierra la conexión
 close_connection(connection)
