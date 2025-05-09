@@ -2,14 +2,19 @@ import Pyro4
 from queue import Queue
 import threading
 
-# Lista de insultos (estos insultos se deben cargar dinámicamente desde InsultService)
-insultos = ["maldito", "idiota", "estúpido", "imbécil"]  # Agrega más insultos si es necesario
+# Conectar al servicio InsultService
+ns = Pyro4.locateNS()
+insult_service_uri = ns.lookup("insult.service")
+insult_service = Pyro4.Proxy(insult_service_uri)
+
 resultados_filtrados = []
 work_queue = Queue()
 
 @Pyro4.expose
 class InsultFilter:
     def filtrar_frase(self, frase):
+        insultos = insult_service.obtener_insultos()
+
         for insulto in insultos:
             frase = frase.replace(insulto, "CENSORED")
         return frase
