@@ -23,7 +23,7 @@ def bind_queue_to_exchange(channel, queue_name, exchange_name='logs'):
 
 def callback(ch, method, properties, body):
     """Función que maneja los mensajes recibidos."""
-    print(f" [x] Received {body.decode()}")
+    print(f" [x] Received: {body.decode()}")
 
 def consume_messages(channel, queue_name):
     """Consume mensajes de la cola en RabbitMQ."""
