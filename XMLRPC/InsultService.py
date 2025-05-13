@@ -20,4 +20,5 @@ server = SimpleXMLRPCServer(('localhost', 8000))
 server.register_function(recibir_insulto, 'recibir_insulto')
 server.register_function(obtener_insultos, 'obtener_insultos')
 
+print("InsultService corriendo en http://localhost:8000/")
 server.serve_forever()

@@ -1,14 +1,18 @@
+from xmlrpc.client import ServerProxy
 from xmlrpc.server import SimpleXMLRPCServer
 from queue import Queue
 import threading
 
-# Lista de insultos (estos insultos se deben cargar dinámicamente desde el servicio InsultService)
-insultos = ["maldito", "idiota", "estúpido"]  # Agrega más insultos si es necesario
+# Conectar al servicio InsultService a través de XMLRPC
+insult_service = ServerProxy('http://localhost:8000')
+
 resultados_filtrados = []
 work_queue = Queue()
 
 # Función para filtrar una frase, reemplazando los insultos por "CENSORED"
 def filtrar_frase(frase):
+    insultos = insult_service.obtener_insultos()
+    
     for insulto in insultos:
         frase = frase.replace(insulto, "CENSORED")
     return frase
