@@ -32,7 +32,6 @@ def generate_performance_graph(results, num_requests_list):
     plt.tight_layout()
     plt.show()
 
-# Dirección del servicio InsultService XMLRPC
 uri = "http://localhost:8000"
 
 results = []

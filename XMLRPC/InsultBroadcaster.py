@@ -3,7 +3,6 @@ import time
 import xmlrpc.client
 from threading import Thread
 
-# Conectar al servicio InsultService
 server = xmlrpc.client.ServerProxy('http://localhost:8000/')
 
 class InsultBroadcaster:
@@ -36,7 +35,7 @@ class InsultBroadcaster:
             else:
                 print("No hay insultos en la lista para broadcast.")
             
-            time.sleep(5)  # Emitir insulto cada 5 segundos
+            time.sleep(5)
 
 
 class InsultSubscriber:
@@ -47,22 +46,17 @@ class InsultSubscriber:
         print(f"{self.name} ha recibido un insulto: {insulto}")
 
 
-# Crear el broadcaster
 broadcaster = InsultBroadcaster()
 
-# Crear suscriptores
 subscriber1 = InsultSubscriber("Suscriptor 1")
 subscriber2 = InsultSubscriber("Suscriptor 2")
 
-# Añadir suscriptores
 broadcaster.add_subscriber(subscriber1)
 broadcaster.add_subscriber(subscriber2)
 
-# Iniciar el broadcaster en un hilo separado
 broadcast_thread = Thread(target=broadcaster.broadcast_insult)
 broadcast_thread.daemon = True
 broadcast_thread.start()
 
-# Mantener el programa en ejecución
 while True:
     time.sleep(1)

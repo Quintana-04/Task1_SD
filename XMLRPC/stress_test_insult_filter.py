@@ -40,7 +40,6 @@ def generate_performance_graph(results, num_requests_list):
     plt.tight_layout()
     plt.show()
 
-# Dirección del servicio InsultFilter e InsultService XMLRPC
 uri_filter = "http://localhost:9000"
 uri_insult = "http://localhost:8000"
 
