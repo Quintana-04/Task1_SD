@@ -19,19 +19,19 @@ def get_all_insults(client, queue_name_insults, insults):
 
 def process_text(client, queue_name_text, insults):
     """Consumeix els textos i els censura si es troben insults, utilitzant una llista d'insults prèviament obtinguda."""
-    print("Consumer is waiting for tasks...")
+    #print("Consumer is waiting for tasks...")
 
     while True:
         task = client.blpop(queue_name_text, timeout=0)  # Blocatge fins que hi hagi un text
         if task:
             text = task[1]
-            print(f"Consumed Text: {text}")
+            #print(f"Consumed Text: {text}")
             
             # Substituïm els insults per 'CENSORED' utilitzant expressions regulars
             for insult in insults:
                 text = re.sub(r'\b' + re.escape(insult) + r'\b', "CENSORED", text)
             
-            print(f"Processed Text: {text}")
+            #print(f"Processed Text: {text}")
             # Aquí es podria afegir l'enviament del text censurat a una altra cua si fos necessari
             # client.rpush("PROCESSED_TEXT", text)
 
