@@ -3,13 +3,11 @@ from xmlrpc.server import SimpleXMLRPCServer
 from queue import Queue
 import threading
 
-# Conectar al servicio InsultService a través de XMLRPC
 insult_service = ServerProxy('http://localhost:8000')
 
 resultados_filtrados = []
 work_queue = Queue()
 
-# Función para filtrar una frase, reemplazando los insultos por "CENSORED"
 def filtrar_frase(frase):
     insultos = insult_service.obtener_insultos()
     
@@ -17,15 +15,13 @@ def filtrar_frase(frase):
         frase = frase.replace(insulto, "CENSORED")
     return frase
 
-# Función para agregar frases a la cola de trabajo
 def agregar_frase_a_cola(frase):
-    if frase:  # Si la frase no está vacía
+    if frase:
         work_queue.put(frase)
         return "Frase añadida a la cola."
     else:
         return "La frase está vacía, no se ha añadido a la cola."
 
-# Función para procesar la cola de trabajo (trabajo en segundo plano)
 def procesar_cola():
     while True:
         if not work_queue.empty():
@@ -34,11 +30,9 @@ def procesar_cola():
             resultados_filtrados.append(frase_filtrada)
             print(f"Frase filtrada: {frase_filtrada}")
 
-# Función para devolver los resultados filtrados
 def obtener_resultados():
     return resultados_filtrados
 
-# Iniciar un hilo para procesar las frases de la cola
 thread = threading.Thread(target=procesar_cola)
 thread.daemon = True
 thread.start()
