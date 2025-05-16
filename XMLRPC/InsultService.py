@@ -1,6 +1,6 @@
+import argparse
 from xmlrpc.server import SimpleXMLRPCServer
 
-# Lista de insultos
 insultos = []
 
 def recibir_insulto(insulto):
@@ -14,10 +14,17 @@ def recibir_insulto(insulto):
 def obtener_insultos():
     return insultos
 
-# Crear el servidor
-server = SimpleXMLRPCServer(('localhost', 0))
-server.register_function(recibir_insulto, 'recibir_insulto')
-server.register_function(obtener_insultos, 'obtener_insultos')
+def run_server(port):
+    server = SimpleXMLRPCServer(('localhost', port))
+    server.register_function(recibir_insulto, 'recibir_insulto')
+    server.register_function(obtener_insultos, 'obtener_insultos')
 
-print("InsultService corriendo en http://localhost:8000/")
-server.serve_forever()
+    print(f"InsultService corriendo en http://localhost:{port}/")
+    server.serve_forever()
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Iniciar el servicio InsultService en el puerto especificado.")
+    parser.add_argument('port', type=int, help="Número de puerto en el que el servidor escuchará.")
+    args = parser.parse_args()
+
+    run_server(args.port)

@@ -1,0 +1,50 @@
+Resultados de pruebas XMLRPC - Múltiples Nodos InsultFilter:
+
+Test con 1 nodo(s) y 1 solicitudes
+Tiempo: 2.09628 segundos
+Speedup: 1.00000
+
+Test con 1 nodo(s) y 5 solicitudes
+Tiempo: 10.18729 segundos
+Speedup: 1.00000
+
+Test con 1 nodo(s) y 10 solicitudes
+Tiempo: 20.40608 segundos
+Speedup: 1.00000
+
+Test con 1 nodo(s) y 20 solicitudes
+Tiempo: 40.77725 segundos
+Speedup: 1.00000
+
+Test con 2 nodo(s) y 1 solicitudes
+Tiempo: 2.08821 segundos
+Speedup: 19.52738
+
+Test con 2 nodo(s) y 5 solicitudes
+Tiempo: 6.15329 segundos
+Speedup: 6.62690
+
+Test con 2 nodo(s) y 10 solicitudes
+Tiempo: 10.24036 segundos
+Speedup: 3.98201
+
+Test con 2 nodo(s) y 20 solicitudes
+Tiempo: 20.42031 segundos
+Speedup: 1.99690
+
+Test con 3 nodo(s) y 1 solicitudes
+Tiempo: 2.07054 segundos
+Speedup: 19.69406
+
+Test con 3 nodo(s) y 5 solicitudes
+Tiempo: 6.16167 segundos
+Speedup: 6.61789
+
+Test con 3 nodo(s) y 10 solicitudes
+Tiempo: 8.17774 segundos
+Speedup: 4.98637
+
+Test con 3 nodo(s) y 20 solicitudes
+Tiempo: 16.29848 segundos
+Speedup: 2.50190
+

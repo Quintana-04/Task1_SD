@@ -1,54 +1,89 @@
-import xmlrpc.client
+import subprocess
 import time
-import random
-import matplotlib.pyplot as plt
+import xmlrpc.client
 
-def stress_test_xmlrpc_insult_filter(uri_filter, uri_insult, num_requests=1000):
-    """Simula una prueba de estrés a través de XMLRPC enviando frases con insultos a InsultFilter."""
-    insult_filter = xmlrpc.client.ServerProxy(uri_filter)
-    insult_service = xmlrpc.client.ServerProxy(uri_insult)
+requests = [1, 5, 10, 20]
+insults = ["tonto", "bobo", "puta", "idiota", "cabron"]
 
-    insults = ["puto", "cabron", "payaso", "idiota", "estupido"]
+def start_insult_service(port):
+    return subprocess.Popen(['python', 'XMLRPC/InsultService.py', str(port)])
 
-    for ins in insults:
-        insult_service.recibir_insulto(ins)
+def start_insult_filter(port):
+    return subprocess.Popen(['python', 'XMLRPC/InsultFilter.py', str(port)])
+
+def test_insult_filter(port, num_requests):
+    frases = [
+        "Eres un tonto y bobo",
+        "No seas puta idiota",
+        "Qué cabron más grande",
+        "Este es un insulto tonto",
+        "Bobo cabron idiota"
+    ]
+    proxy = xmlrpc.client.ServerProxy(f"http://localhost:{port}")
 
     start_time = time.time()
-
-    for _ in range(num_requests):
-        insult = random.choice(insults)
-        frase = f"Eres un {insult} tonto"
-        insult_filter.agregar_frase_a_cola(frase)
-
+    for i in range(num_requests):
+        frase = frases[i % len(frases)]
+        proxy.agregar_frase_a_cola(frase)
     end_time = time.time()
-    total_time = end_time - start_time
-    throughput = num_requests / total_time
-    print(f"Processed {num_requests} texts in {total_time:.2f} seconds.")
-    print(f"Throughput: {throughput:.2f} texts per second.")
-    return throughput
 
-def generate_performance_graph(results, num_requests_list):
-    throughput = [r for r in results]
+    return end_time - start_time
 
-    fig, ax1 = plt.subplots(figsize=(10, 6))
-    ax1.plot(num_requests_list, throughput, 'b-', label='Throughput (texts per second)')
+def calculate_speedup(time_single, time_multi):
+    if time_multi > 0:
+        return time_single / time_multi
+    return 0
 
-    ax1.set_xlabel('Number of Texts Sent')
-    ax1.set_ylabel('Throughput (texts per second)', color='b')
-    plt.title('Performance of XMLRPC with InsultFilter')
-    ax1.legend(loc='upper left')
-    plt.tight_layout()
-    plt.show()
+def execute_multiple_nodes_test():
+    # Lanzar InsultService único
+    insult_service_process = start_insult_service(8000)
+    time.sleep(3)  # Esperar que arranque
 
-uri_filter = "http://localhost:9000"
-uri_insult = "http://localhost:8000"
+    # Conectarse para añadir insultos
+    insult_service_proxy = xmlrpc.client.ServerProxy("http://localhost:8000")
+    for insulto in insults:
+        insult_service_proxy.recibir_insulto(insulto)
 
-results = []
-num_requests_list = [10, 50, 100, 200]
+    with open("XMLRPC/test_results_m.txt", "w") as file:
+        file.write("Resultados de pruebas XMLRPC - Múltiples Nodos InsultFilter:\n\n")
 
-for num_requests in num_requests_list:
-    print(f"Running test with {num_requests} texts...")
-    result = stress_test_xmlrpc_insult_filter(uri_filter, uri_insult, num_requests=num_requests)
-    results.append(result)
+        for num_nodes in [1, 2, 3]:
+            processes = []
+            base_port = 9000
+            for i in range(num_nodes):
+                p = start_insult_filter(base_port + i)
+                processes.append(p)
 
-generate_performance_graph(results, num_requests_list)
+            time.sleep(5)  # Esperar que arranquen los filtros
+
+            for n in requests:
+                file.write(f"Test con {num_nodes} nodo(s) y {n} solicitudes\n")
+
+                if num_nodes == 1:
+                    time_single = test_insult_filter(base_port, n)
+                    speedup = 1.0
+                else:
+                    times = []
+                    requests_per_node = n // num_nodes
+                    remainder = n % num_nodes
+                    for i in range(num_nodes):
+                        requests_to_send = requests_per_node + (remainder if i == num_nodes - 1 else 0)
+                        t = test_insult_filter(base_port + i, requests_to_send)
+                        times.append(t)
+                    time_multi = max(times)
+                    speedup = calculate_speedup(time_single, time_multi)
+
+                file.write(f"Tiempo: {time_single if num_nodes == 1 else time_multi:.5f} segundos\n")
+                file.write(f"Speedup: {speedup:.5f}\n\n")
+
+                print(f"[Nodos: {num_nodes}] {n} solicitudes -> Tiempo: {time_single if num_nodes == 1 else time_multi:.5f}s, Speedup: {speedup:.5f}")
+
+            for p in processes:
+                p.terminate()
+                p.wait()
+
+    insult_service_process.terminate()
+    insult_service_process.wait()
+
+if __name__ == "__main__":
+    execute_multiple_nodes_test()
