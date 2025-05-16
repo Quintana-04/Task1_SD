@@ -23,7 +23,7 @@ def store_insults(insults):
     for insult in insults:
         if insult not in insults_list:
             insults_list.append(insult)
-            print(f" [x] Stored insult: {insult}")
+            #print(f" [x] Stored insult: {insult}")
 
 def filter_text(text, insults_list):
     """Filtra los insultos en los textos y los reemplaza por 'CENSORED'"""
@@ -40,13 +40,13 @@ def callback_insults(ch, method, properties, body):
 def callback_texts(ch, method, properties, body):
     """Función que maneja los textos recibidos (de la cola 'texts_to_filter')"""
     original_text = body.decode()
-    print(f" [x] Received text: {original_text}")
+    #print(f" [x] Received text: {original_text}")
     
     # Filtrar el texto
     original, filtered_text = filter_text(original_text, insults_list)
     
     # Mostrar cómo el texto es censurado
-    print(f" [x] Filtered text: {filtered_text}")
+    #print(f" [x] Filtered text: {filtered_text}")
 
 def consume_messages(queue_name, callback):
     """Consume mensajes de una cola en RabbitMQ, utilizando su propio canal"""
@@ -57,7 +57,7 @@ def consume_messages(queue_name, callback):
 
     # Usamos basic_consume para empezar a consumir mensajes
     channel.basic_consume(queue=queue_name, on_message_callback=callback, auto_ack=True)
-    print(f' [*] Waiting for messages in {queue_name}. To exit, press CTRL+C')
+    #print(f' [*] Waiting for messages in {queue_name}. To exit, press CTRL+C')
     channel.start_consuming()
 
 def consume_messages_in_threads():

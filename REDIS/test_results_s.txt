@@ -1,13 +1,13 @@
 Resultados de las pruebas:
 
 ** Resultados de InsultService **
-Enviados 1000 insultos en 0.20104 segundos.
-Enviados 5000 insultos en 1.18525 segundos.
-Enviados 10000 insultos en 2.61819 segundos.
-Enviados 20000 insultos en 5.04920 segundos.
+Enviados 1000 insultos en 0.13120 segundos.
+Enviados 5000 insultos en 1.16462 segundos.
+Enviados 10000 insultos en 2.33069 segundos.
+Enviados 20000 insultos en 4.11967 segundos.
 
 ** Resultados de InsultFilter **
-Censurados 1000 textos en 0.00496 segundos.
-Censurados 5000 textos en 0.00576 segundos.
-Censurados 10000 textos en 0.00473 segundos.
-Censurados 20000 textos en 0.00488 segundos.
+Censurados 1000 textos en 0.04467 segundos.
+Censurados 5000 textos en 0.05646 segundos.
+Censurados 10000 textos en 0.04405 segundos.
+Censurados 20000 textos en 0.00835 segundos.
