@@ -1,26 +1,18 @@
 import Pyro4
 from queue import Queue
 import threading
+import time
 
-# Conectar al servicio InsultService
-ns = Pyro4.locateNS()
-insult_service_uri = ns.lookup("insult.service")
-insult_service = Pyro4.Proxy(insult_service_uri)
-
-resultados_filtrados = []
 work_queue = Queue()
+resultados_filtrados = []
 
 @Pyro4.expose
 class InsultFilter:
-    def filtrar_frase(self, frase):
-        insultos = insult_service.obtener_insultos()
-
-        for insulto in insultos:
-            frase = frase.replace(insulto, "CENSORED")
-        return frase
+    def __init__(self, instance_num):
+        self.instance_num = instance_num
 
     def agregar_frase_a_cola(self, frase):
-        if frase:  # Si la frase no está vacía
+        if frase:
             work_queue.put(frase)
             return "Frase añadida a la cola."
         else:
@@ -29,26 +21,39 @@ class InsultFilter:
     def obtener_resultados(self):
         return resultados_filtrados
 
+def procesar_cola(instance_num):
+    ns = Pyro4.locateNS()
+    insult_service_uri = ns.lookup(f"insult.service.{instance_num}")
+    insult_service = Pyro4.Proxy(insult_service_uri)
 
-def procesar_cola():
     while True:
         if not work_queue.empty():
             frase = work_queue.get()
-            frase_filtrada = insult_filter.filtrar_frase(frase)
-            resultados_filtrados.append(frase_filtrada)
-            print(f"Frase filtrada: {frase_filtrada}")
+            insultos = insult_service.obtener_insultos()
+            for insulto in insultos:
+                frase = frase.replace(insulto, "CENSORED")
+            resultados_filtrados.append(frase)
+            print(f"Frase filtrada: {frase}")
+        else:
+            time.sleep(0.1)  # Pequeña espera para no consumir CPU sin necesidad
 
-# Crear y registrar el servicio en Pyro
-insult_filter = InsultFilter()
-daemon = Pyro4.Daemon()
-uri = daemon.register(insult_filter)
-ns = Pyro4.locateNS()
-ns.register("insult.filter", uri)
+if __name__ == "__main__":
+    import sys
+    if len(sys.argv) != 2:
+        print("Uso: python InsultFilter.py <instance_num>")
+        sys.exit(1)
+    instance_num = sys.argv[1]
 
-# Iniciar el hilo para procesar la cola
-filter_thread = threading.Thread(target=procesar_cola)
-filter_thread.daemon = True
-filter_thread.start()
+    insult_filter = InsultFilter(instance_num)
+    daemon = Pyro4.Daemon()
+    uri = daemon.register(insult_filter)
 
-print("InsultFilter corriendo...")
-daemon.requestLoop()
+    ns = Pyro4.locateNS()
+    ns.register(f"insult.filter.{instance_num}", uri)
+
+    filter_thread = threading.Thread(target=procesar_cola, args=(instance_num,))
+    filter_thread.daemon = True
+    filter_thread.start()
+
+    print(f"InsultFilter instancia {instance_num} corriendo y registrada como 'insult.filter.{instance_num}'...")
+    daemon.requestLoop()
