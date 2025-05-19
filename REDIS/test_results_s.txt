@@ -1,13 +1,13 @@
-Resultados de las pruebas:
+Resultados de las pruebas single-node Redis:
 
 ** Resultados de InsultService **
-Enviados 1000 insultos en 0.13120 segundos.
-Enviados 5000 insultos en 1.16462 segundos.
-Enviados 10000 insultos en 2.33069 segundos.
-Enviados 20000 insultos en 4.11967 segundos.
+Enviados 1000 insultos en 0.23650 segundos.
+Enviados 5000 insultos en 1.09214 segundos.
+Enviados 10000 insultos en 2.10285 segundos.
+Enviados 20000 insultos en 3.51821 segundos.
 
 ** Resultados de InsultFilter **
-Censurados 1000 textos en 0.04467 segundos.
-Censurados 5000 textos en 0.05646 segundos.
-Censurados 10000 textos en 0.04405 segundos.
-Censurados 20000 textos en 0.00835 segundos.
+Enviados 1000 textos en 1.10477 segundos.
+Enviados 5000 textos en 5.23317 segundos.
+Enviados 10000 textos en 10.19064 segundos.
+Enviados 20000 textos en 21.28528 segundos.

@@ -1,21 +1,28 @@
 import redis
+import time
 
 def connect_to_redis(host='localhost', port=6379, db=0):
-    """Estableix una connexió amb el servidor Redis."""
     return redis.Redis(host=host, port=port, db=db, decode_responses=True)
 
-def consume_tasks_from_queue(client, queue_name):
-    """Consumeix tasques de la cua de Redis i les imprimeix."""
-    #print("Consumer is waiting for tasks...")
-    tasks_list = []
-    
+def consume_tasks_from_queue(client, queue_name, queue_name_filter):
+    insults_list = []
     while True:
-        task = client.blpop(queue_name, timeout=0)  # Bloqueja fins que una tasca estigui disponible
-        #if task and task not in tasks_list:
-        tasks_list.append(task)
-        #print(f"Consumed: {task[1]}")
+        task = client.blpop(queue_name, timeout=0)  # Espera insultos en la cola INSULTS
+        insult = task[1]
+        if insult not in insults_list:
+            insults_list.append(insult)
+            # print(f"Insulto almacenado en InsultService: {insult}")
+            # Enviar insulto almacenado a cola INSULTS_FILTER para el filtro
+            client.rpush(queue_name_filter, insult)
+            # print(f"Enviado insulto a InsultFilter: {insult}")
+        # Aquí puedes agregar alguna condición para salir si quieres
 
-#Codi principal
-client = connect_to_redis()
-queue_name = "INSULTS"
-consume_tasks_from_queue(client, queue_name)
+def main():
+    client = connect_to_redis()
+    queue_name = "INSULTS"           # Cola donde recibe insultos del cliente
+    queue_name_filter = "INSULTS_FILTER"  # Cola donde manda insultos para InsultFilter
+
+    consume_tasks_from_queue(client, queue_name, queue_name_filter)
+
+if __name__ == "__main__":
+    main()
