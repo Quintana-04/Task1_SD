@@ -47,9 +47,8 @@ def test_insult_service(proxy, num_tasks_list, insults, file):
 def test_insult_filter(proxy, num_tasks_list, file):
     results = []
     for n in num_tasks_list:
-        send_texts(proxy, n)
         start_time = time.time()
-        time.sleep(5)  # Esperar procesamiento
+        send_texts(proxy, n)
         end_time = time.time()
         elapsed = end_time - start_time
         msg = f"Censurados {n} textos en {elapsed:.5f} segundos."

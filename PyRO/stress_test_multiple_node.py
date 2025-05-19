@@ -28,8 +28,6 @@ def send_texts(proxy, num_tasks, result, idx):
     for i in range(num_tasks):
         text = texts[i % len(texts)]
         proxy.agregar_frase_a_cola(text)
-    # Esperar procesamiento (mejorable)
-    time.sleep(5)
     end = time.time()
     result[idx] = end - start
 
@@ -66,10 +64,9 @@ def execute_multiple_nodes_tests(num_tasks_list, insults):
                 proxies_service = [Pyro4.Proxy(ns.lookup(f"insult.service.{i}")) for i in range(num_nodes)]
                 proxies_filter = [Pyro4.Proxy(ns.lookup(f"insult.filter.{i}")) for i in range(num_nodes)]
 
-                # Solo cargamos insultos en la primera instancia del servicio
-                if n not in times_service_1node:
+                for proxy in proxies_service:
                     for insult in insults:
-                        proxies_service[0].recibir_insulto(insult)
+                        proxy.recibir_insulto(insult)
 
                 # Preparar arrays para resultados
                 service_times = [0] * num_nodes

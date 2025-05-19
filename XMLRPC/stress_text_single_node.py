@@ -52,10 +52,8 @@ def test_insult_filter(proxy, num_tasks_list, file):
     """Test de rendimiento para InsultFilter."""
     results = []
     for n in num_tasks_list:
-        send_texts(proxy, n, file)
         start_time = time.time()
-        # Dejamos 5 segundos para que el hilo de procesamiento haga su trabajo
-        time.sleep(5)
+        send_texts(proxy, n, file)
         end_time = time.time()
         elapsed_time = end_time - start_time
         result_message = f"Censurados {n} textos en {elapsed_time:.5f} segundos."
