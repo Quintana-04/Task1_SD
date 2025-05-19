@@ -10,7 +10,7 @@ def write_to_both(message, file):
 def send_insults(num_tasks, insults):
     connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
     channel = connection.channel()
-    queue_name = 'insults_to_censor'
+    queue_name = 'insults_to_censor'  # Solo enviamos aquí los insultos
     channel.queue_declare(queue=queue_name)
 
     start_time = time.time()
@@ -77,6 +77,7 @@ def execute_multiple_nodes_test(num_tasks_list, insults):
         times_filter_1node = {}
 
         for num_nodes in [1, 2, 3]:
+            file.write(f"\n** Test con {num_nodes} Nodo(s) **\n")
             for num_tasks in num_tasks_list:
                 file.write(f"\n--- Test con {num_nodes} Nodo(s) y {num_tasks} datos ---\n")
 
@@ -115,7 +116,6 @@ def execute_multiple_nodes_test(num_tasks_list, insults):
                     write_to_both(f"Tiempo InsultFilter con {num_nodes} nodos: {filter_time:.5f} segundos", file)
                     file.write(f"Speedup de InsultService con {num_nodes} nodos: {speedup_service:.5f}\n")
                     file.write(f"Speedup de InsultFilter con {num_nodes} nodos: {speedup_filter:.5f}\n")
-
 
 if __name__ == "__main__":
     insults = ["tonto", "bobo", "puta", "idiota", "cabron"]

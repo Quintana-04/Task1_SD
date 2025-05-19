@@ -1,65 +1,71 @@
 Resultados de las pruebas - Múltiples Nodos:
 
+** Test con 1 Nodo(s) **
+
 --- Test con 1 Nodo(s) y 1000 datos ---
-Tiempo InsultService con 1 nodos: 0.04676 segundos
-Tiempo InsultFilter con 1 nodos: 0.18067 segundos
+Tiempo InsultService con 1 nodos: 0.03980 segundos
+Tiempo InsultFilter con 1 nodos: 0.20399 segundos
 
 --- Test con 1 Nodo(s) y 5000 datos ---
-Tiempo InsultService con 1 nodos: 0.18577 segundos
-Tiempo InsultFilter con 1 nodos: 0.90008 segundos
+Tiempo InsultService con 1 nodos: 0.18656 segundos
+Tiempo InsultFilter con 1 nodos: 0.85949 segundos
 
 --- Test con 1 Nodo(s) y 10000 datos ---
-Tiempo InsultService con 1 nodos: 0.37949 segundos
-Tiempo InsultFilter con 1 nodos: 1.71429 segundos
+Tiempo InsultService con 1 nodos: 0.39883 segundos
+Tiempo InsultFilter con 1 nodos: 1.74064 segundos
 
 --- Test con 1 Nodo(s) y 20000 datos ---
-Tiempo InsultService con 1 nodos: 0.70285 segundos
-Tiempo InsultFilter con 1 nodos: 3.31117 segundos
+Tiempo InsultService con 1 nodos: 0.75557 segundos
+Tiempo InsultFilter con 1 nodos: 3.39088 segundos
+
+** Test con 2 Nodo(s) **
 
 --- Test con 2 Nodo(s) y 1000 datos ---
-Tiempo InsultService con 2 nodos: 0.05687 segundos
-Tiempo InsultFilter con 2 nodos: 0.17090 segundos
-Speedup de InsultService con 2 nodos: 0.82219
-Speedup de InsultFilter con 2 nodos: 1.05717
+Tiempo InsultService con 2 nodos: 0.04468 segundos
+Tiempo InsultFilter con 2 nodos: 0.19480 segundos
+Speedup de InsultService con 2 nodos: 0.89091
+Speedup de InsultFilter con 2 nodos: 1.04717
 
 --- Test con 2 Nodo(s) y 5000 datos ---
-Tiempo InsultService con 2 nodos: 0.18928 segundos
-Tiempo InsultFilter con 2 nodos: 0.81280 segundos
-Speedup de InsultService con 2 nodos: 0.98147
-Speedup de InsultFilter con 2 nodos: 1.10738
+Tiempo InsultService con 2 nodos: 0.20531 segundos
+Tiempo InsultFilter con 2 nodos: 1.28579 segundos
+Speedup de InsultService con 2 nodos: 0.90871
+Speedup de InsultFilter con 2 nodos: 0.66845
 
 --- Test con 2 Nodo(s) y 10000 datos ---
-Tiempo InsultService con 2 nodos: 0.42886 segundos
-Tiempo InsultFilter con 2 nodos: 1.79880 segundos
-Speedup de InsultService con 2 nodos: 0.88487
-Speedup de InsultFilter con 2 nodos: 0.95302
+Tiempo InsultService con 2 nodos: 0.38316 segundos
+Tiempo InsultFilter con 2 nodos: 2.60634 segundos
+Speedup de InsultService con 2 nodos: 1.04091
+Speedup de InsultFilter con 2 nodos: 0.66785
 
 --- Test con 2 Nodo(s) y 20000 datos ---
-Tiempo InsultService con 2 nodos: 0.70626 segundos
-Tiempo InsultFilter con 2 nodos: 3.21553 segundos
-Speedup de InsultService con 2 nodos: 0.99517
-Speedup de InsultFilter con 2 nodos: 1.02974
+Tiempo InsultService con 2 nodos: 0.80521 segundos
+Tiempo InsultFilter con 2 nodos: 4.17250 segundos
+Speedup de InsultService con 2 nodos: 0.93835
+Speedup de InsultFilter con 2 nodos: 0.81267
+
+** Test con 3 Nodo(s) **
 
 --- Test con 3 Nodo(s) y 1000 datos ---
-Tiempo InsultService con 3 nodos: 0.05059 segundos
-Tiempo InsultFilter con 3 nodos: 0.17424 segundos
-Speedup de InsultService con 3 nodos: 0.92438
-Speedup de InsultFilter con 3 nodos: 1.03690
+Tiempo InsultService con 3 nodos: 0.05324 segundos
+Tiempo InsultFilter con 3 nodos: 0.20254 segundos
+Speedup de InsultService con 3 nodos: 0.74758
+Speedup de InsultFilter con 3 nodos: 1.00715
 
 --- Test con 3 Nodo(s) y 5000 datos ---
-Tiempo InsultService con 3 nodos: 0.20127 segundos
-Tiempo InsultFilter con 3 nodos: 0.87549 segundos
-Speedup de InsultService con 3 nodos: 0.92300
-Speedup de InsultFilter con 3 nodos: 1.02808
+Tiempo InsultService con 3 nodos: 0.19147 segundos
+Tiempo InsultFilter con 3 nodos: 0.91504 segundos
+Speedup de InsultService con 3 nodos: 0.97438
+Speedup de InsultFilter con 3 nodos: 0.93929
 
 --- Test con 3 Nodo(s) y 10000 datos ---
-Tiempo InsultService con 3 nodos: 0.39627 segundos
-Tiempo InsultFilter con 3 nodos: 1.92585 segundos
-Speedup de InsultService con 3 nodos: 0.95764
-Speedup de InsultFilter con 3 nodos: 0.89015
+Tiempo InsultService con 3 nodos: 0.46507 segundos
+Tiempo InsultFilter con 3 nodos: 2.59773 segundos
+Speedup de InsultService con 3 nodos: 0.85757
+Speedup de InsultFilter con 3 nodos: 0.67006
 
 --- Test con 3 Nodo(s) y 20000 datos ---
-Tiempo InsultService con 3 nodos: 0.79365 segundos
-Tiempo InsultFilter con 3 nodos: 3.83793 segundos
-Speedup de InsultService con 3 nodos: 0.88559
-Speedup de InsultFilter con 3 nodos: 0.86275
+Tiempo InsultService con 3 nodos: 1.08573 segundos
+Tiempo InsultFilter con 3 nodos: 4.94075 segundos
+Speedup de InsultService con 3 nodos: 0.69591
+Speedup de InsultFilter con 3 nodos: 0.68631
