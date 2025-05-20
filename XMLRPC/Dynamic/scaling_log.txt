@@ -1,0 +1,67 @@
+=== Test de escalado dinámico XMLRPC iniciado ===
+
+[22:40:23] InsultService:
+  - Carga medida (lambda): 0.00 pet/s
+  - Fórmula usada: nodos = ceil(lambda * T / C) = ceil(0.00 * 2 / 0.5) = 1
+  - Nodos actuales: 0
+  - Nodos requeridos: 1 => Se decide aumentar nodos
+
+[22:40:23] InsultFilter:
+  - Carga medida (lambda): 0.00 pet/s
+  - Fórmula usada: nodos = ceil(lambda * T / C) = ceil(0.00 * 2 / 0.5) = 1
+  - Nodos actuales: 0
+  - Nodos requeridos: 1 => Se decide aumentar nodos
+
+[22:40:23] Estado post-escalado:
+  - InsultService nodos activos: 1
+  - InsultFilter nodos activos: 1
+
+[22:40:34] InsultService:
+  - Carga medida (lambda): 0.00 pet/s
+  - Fórmula usada: nodos = ceil(lambda * T / C) = ceil(0.00 * 2 / 0.5) = 1
+  - Nodos actuales: 1
+  - Nodos requeridos: 1 => Se decide mantener nodos
+
+[22:40:34] InsultFilter:
+  - Carga medida (lambda): 0.00 pet/s
+  - Fórmula usada: nodos = ceil(lambda * T / C) = ceil(0.00 * 2 / 0.5) = 1
+  - Nodos actuales: 1
+  - Nodos requeridos: 1 => Se decide mantener nodos
+
+[22:40:34] Estado post-escalado:
+  - InsultService nodos activos: 1
+  - InsultFilter nodos activos: 1
+
+[22:40:35] InsultService:
+  - Carga medida (lambda): 0.00 pet/s
+  - Fórmula usada: nodos = ceil(lambda * T / C) = ceil(0.00 * 2 / 0.5) = 1
+  - Nodos actuales: 1
+  - Nodos requeridos: 1 => Se decide mantener nodos
+
+[22:40:35] InsultFilter:
+  - Carga medida (lambda): 0.00 pet/s
+  - Fórmula usada: nodos = ceil(lambda * T / C) = ceil(0.00 * 2 / 0.5) = 1
+  - Nodos actuales: 1
+  - Nodos requeridos: 1 => Se decide mantener nodos
+
+[22:40:35] Estado post-escalado:
+  - InsultService nodos activos: 1
+  - InsultFilter nodos activos: 1
+
+[22:40:36] InsultService:
+  - Carga medida (lambda): 2.00 pet/s
+  - Fórmula usada: nodos = ceil(lambda * T / C) = ceil(2.00 * 2 / 0.5) = 8
+  - Nodos actuales: 1
+  - Nodos requeridos: 8 => Se decide aumentar nodos
+
+[22:40:36] InsultFilter:
+  - Carga medida (lambda): 4.00 pet/s
+  - Fórmula usada: nodos = ceil(lambda * T / C) = ceil(4.00 * 2 / 0.5) = 16
+  - Nodos actuales: 1
+  - Nodos requeridos: 16 => Se decide aumentar nodos
+
+[22:40:36] Estado post-escalado:
+  - InsultService nodos activos: 8
+  - InsultFilter nodos activos: 16
+
+=== Test finalizado ===
