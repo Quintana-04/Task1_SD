@@ -9,17 +9,14 @@ resultados_filtrados = []
 work_queue = Queue()
 
 def filtrar_frase(frase):
-    insultos = insult_service.obtener_insultos()
+    insultos = ["tonto", "bobo", "puta", "idiota", "cabron"]
     for insulto in insultos:
         frase = frase.replace(insulto, "CENSORED")
     return frase
 
 def agregar_frase_a_cola(frase):
-    if frase:
-        work_queue.put(frase)
-        return "Frase añadida a la cola."
-    else:
-        return "La frase está vacía, no se ha añadido a la cola."
+    work_queue.put(frase)
+    return "Frase añadida a la cola."
 
 def procesar_cola():
     while True:

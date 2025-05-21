@@ -12,30 +12,20 @@ class InsultFilter:
         self.instance_num = instance_num
 
     def agregar_frase_a_cola(self, frase):
-        if frase:
-            work_queue.put(frase)
-            return "Frase añadida a la cola."
-        else:
-            return "La frase está vacía, no se ha añadido a la cola."
+        work_queue.put(frase)
+        return "Frase añadida a la cola."
 
     def obtener_resultados(self):
         return resultados_filtrados
 
-def procesar_cola(instance_num):
-    ns = Pyro4.locateNS()
-    insult_service_uri = ns.lookup(f"insult.service.{instance_num}")
-    insult_service = Pyro4.Proxy(insult_service_uri)
-
-    while True:
-        if not work_queue.empty():
-            frase = work_queue.get()
-            insultos = insult_service.obtener_insultos()
-            for insulto in insultos:
-                frase = frase.replace(insulto, "CENSORED")
-            resultados_filtrados.append(frase)
-            print(f"Frase filtrada: {frase}")
-        else:
-            time.sleep(0.1)  # Pequeña espera para no consumir CPU sin necesidad
+def procesar_cola():
+    if not work_queue.empty():
+        frase = work_queue.get()
+        insultos = ["tonto", "bobo", "puta", "idiota", "cabron"]
+        for insulto in insultos:
+            frase = frase.replace(insulto, "CENSORED")
+        resultados_filtrados.append(frase)
+        print(f"Frase filtrada: {frase}")
 
 if __name__ == "__main__":
     import sys
