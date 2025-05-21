@@ -1,13 +1,13 @@
 Resultados de las pruebas single-node RabbitMQ:
 
 ** Resultados de InsultService **
-Enviados 1000 insultos a InsultService en 0.07813 segundos.
-Enviados 5000 insultos a InsultService en 0.33735 segundos.
-Enviados 10000 insultos a InsultService en 0.63107 segundos.
-Enviados 20000 insultos a InsultService en 0.99189 segundos.
+Enviados 1000 insultos a InsultService en 0.04705 segundos.
+Enviados 5000 insultos a InsultService en 0.23519 segundos.
+Enviados 10000 insultos a InsultService en 0.47541 segundos.
+Enviados 20000 insultos a InsultService en 1.20016 segundos.
 
 ** Resultados de InsultFilter **
-Enviados 1000 textos a InsultFilter en 0.21257 segundos.
-Enviados 5000 textos a InsultFilter en 1.23701 segundos.
-Enviados 10000 textos a InsultFilter en 2.03500 segundos.
-Enviados 20000 textos a InsultFilter en 3.72349 segundos.
+Enviados 1000 textos a InsultFilter en 0.28783 segundos.
+Enviados 5000 textos a InsultFilter en 1.29300 segundos.
+Enviados 10000 textos a InsultFilter en 1.94751 segundos.
+Enviados 20000 textos a InsultFilter en 3.72908 segundos.
