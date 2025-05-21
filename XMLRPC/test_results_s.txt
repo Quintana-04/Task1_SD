@@ -1,13 +1,13 @@
 Resultados de las pruebas (Single Node XMLRPC):
 
 ** Resultados de InsultService **
-Enviados 1 insultos en 2.00382 segundos.
-Enviados 5 insultos en 10.02127 segundos.
-Enviados 10 insultos en 20.03457 segundos.
-Enviados 20 insultos en 40.06887 segundos.
+Enviados 1 insultos en 2.04536 segundos.
+Enviados 5 insultos en 10.18527 segundos.
+Enviados 10 insultos en 20.36636 segundos.
+Enviados 20 insultos en 40.77190 segundos.
 
 ** Resultados de InsultFilter **
-Censurados 1 textos en 2.01496 segundos.
-Censurados 5 textos en 10.02444 segundos.
-Censurados 10 textos en 20.06216 segundos.
-Censurados 20 textos en 40.07768 segundos.
+Censurados 1 textos en 2.08407 segundos.
+Censurados 5 textos en 10.19667 segundos.
+Censurados 10 textos en 20.41783 segundos.
+Censurados 20 textos en 40.87384 segundos.

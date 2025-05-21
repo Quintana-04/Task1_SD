@@ -1,10 +1,10 @@
 Resultados pruebas Single Node PyRO:
 
-Enviados 1000 insultos en 0.29571 segundos.
-Enviados 5000 insultos en 1.41602 segundos.
-Enviados 10000 insultos en 2.70641 segundos.
-Enviados 20000 insultos en 5.64187 segundos.
-Censurados 1000 textos en 0.53767 segundos.
-Censurados 5000 textos en 2.39685 segundos.
-Censurados 10000 textos en 4.79070 segundos.
-Censurados 20000 textos en 8.73869 segundos.
+Enviados 1000 insultos en 0.09387 segundos.
+Enviados 5000 insultos en 0.47227 segundos.
+Enviados 10000 insultos en 0.87798 segundos.
+Enviados 20000 insultos en 1.84137 segundos.
+Censurados 1000 textos en 0.17407 segundos.
+Censurados 5000 textos en 0.89075 segundos.
+Censurados 10000 textos en 1.65194 segundos.
+Censurados 20000 textos en 3.26691 segundos.

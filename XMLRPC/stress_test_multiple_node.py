@@ -4,6 +4,7 @@ import os
 import xmlrpc.client
 import threading
 
+# Escribe el mismo mensaje tanto en la consola como en el archivo de salida
 def write_to_both(message, file):
     print(message)
     file.write(message + "\n")
@@ -14,6 +15,7 @@ def start_insult_service(port):
 def start_insult_filter(port):
     return subprocess.Popen(['python', 'XMLRPC/InsultFilter.py', str(port)])
 
+# Manda los insultos necesarios al puerto pasado por parámetro y calcula el tiempo que tarda
 def send_insults(num_tasks, insults, port, result, idx):
     proxy = xmlrpc.client.ServerProxy(f"http://localhost:{port}")
     start_time = time.time()
@@ -23,6 +25,7 @@ def send_insults(num_tasks, insults, port, result, idx):
     end_time = time.time()
     result[idx] = end_time - start_time
 
+# Manda los textos necesarios al puerto pasado por parámetro y calcula el tiempo
 def send_texts(num_tasks, port, result, idx):
     proxy = xmlrpc.client.ServerProxy(f"http://localhost:{port}")
     texts = [
@@ -39,16 +42,19 @@ def send_texts(num_tasks, port, result, idx):
     end_time = time.time()
     result[idx] = end_time - start_time
 
+# Calcula el speedup
 def calculate_speedup(time_single, time_multi):
     if time_multi > 0:
         return time_single / time_multi
     return 0
 
+# Termina los procesos
 def terminate_services(processes):
     for p in processes:
         p.terminate()
         p.wait()
 
+# Ejecuta los tests del InsultService y del InsultFilter
 def execute_multiple_nodes_test(num_tasks_list, insults):
     if not os.path.exists("XMLRPC"):
         os.makedirs("XMLRPC")
@@ -70,7 +76,7 @@ def execute_multiple_nodes_test(num_tasks_list, insults):
                     service_proc = [start_insult_service(base_port_service)]
                     time.sleep(2)
                     
-                    # Insertar los insultos en el primer nodo del InsultService
+                    # Enviar los insultos en el primer nodo del InsultService
                     proxy = xmlrpc.client.ServerProxy(f"http://localhost:{base_port_service}")
                     for insult in insults:
                         proxy.recibir_insulto(insult)
@@ -78,15 +84,12 @@ def execute_multiple_nodes_test(num_tasks_list, insults):
                     filter_proc = [start_insult_filter(base_port_filter)]
                     time.sleep(5)
 
-                    # Preparar listas para capturar los tiempos
+                    # Preparar listas para guardar los tiempos
                     service_time_list = [0]
                     filter_time_list = [0]
 
-                    # Medir tiempo total (aunque no es obligatorio)
-                    t0 = time.time()
                     send_insults(num_tasks, insults, base_port_service, service_time_list, 0)
                     send_texts(num_tasks, base_port_filter, filter_time_list, 0)
-                    t1 = time.time()
 
                     service_time = service_time_list[0]
                     filter_time = filter_time_list[0]
@@ -128,18 +131,16 @@ def execute_multiple_nodes_test(num_tasks_list, insults):
                     filter_times = [0] * num_nodes
 
                     for i in range(num_nodes):
-                        count = insults_per_node + (1 if i == num_nodes - 1 else 0)
+                        count = insults_per_node + (remainder if i == num_nodes - 1 else 0)
                         t1 = threading.Thread(target=send_insults, args=(count, insults, base_port_service + i, service_times, i))
                         t2 = threading.Thread(target=send_texts, args=(count, base_port_filter + i, filter_times, i))
                         service_threads.append(t1)
                         filter_threads.append(t2)
 
-                    start_all = time.time()
                     for t in service_threads + filter_threads:
                         t.start()
                     for t in service_threads + filter_threads:
                         t.join()
-                    end_all = time.time()
 
                     service_time = max(service_times)
                     filter_time = max(filter_times)
@@ -155,6 +156,8 @@ def execute_multiple_nodes_test(num_tasks_list, insults):
                     file.write(f"Speedup de InsultService con {num_nodes} nodos: {speedup_service:.5f}\n")
                     file.write(f"Speedup de InsultFilter con {num_nodes} nodos: {speedup_filter:.5f}\n")
 
+
+# Programa principal
 if __name__ == "__main__":
     insults = ["tonto", "bobo", "puta", "idiota", "cabron"]
     num_tasks_list = [1, 5, 10, 20]

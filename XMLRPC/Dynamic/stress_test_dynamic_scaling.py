@@ -14,16 +14,16 @@ C_INSULT = 0.5    # Capacidad por nodo (peticiones/segundo) InsultService
 T_FILTER = 2      # Tiempo de servicio (segundos) por nodo InsultFilter
 C_FILTER = 0.5    # Capacidad por nodo (peticiones/segundo) InsultFilter
 
-TEST_DURATION = 60        # Duración total test (segundos)
-MEASURE_INTERVAL = 1       # Intervalo para medir lambda (segundos)
+TEST_DURATION = 40        # Duración total test (segundos)
+MEASURE_INTERVAL = 3       # Medir lambda cada MEASURE INTERVAL segundos
 
 # Carga objetivo total (Peticiones/segundo)
-RATE_INSULTS = 4        # Peticiones/segundo totales a InsultService
-RATE_TEXTS = 8          # Peticiones/segundo totales a InsultFilter
+RATE_INSULTS = 5        # Peticiones/segundo totales a InsultService
+RATE_TEXTS = 2          # Peticiones/segundo totales a InsultFilter
 
 # Número inicial de procesos generadores de carga
-LOAD_GEN_INSULT_PROCS = 2
-LOAD_GEN_FILTER_PROCS = 4
+LOAD_GEN_INSULT_PROCS = 1
+LOAD_GEN_FILTER_PROCS = 1
 
 # Rutas scripts de los servidores XMLRPC
 INSULT_SERVICE_SCRIPT = "XMLRPC/InsultService.py"
@@ -34,10 +34,10 @@ INSULT_SERVICE_BASE_PORT = 8000
 INSULT_FILTER_BASE_PORT = 8001
 
 # Procesos nodos servidores
-insult_nodes = []  # Lista de tuples (process, port)
-filter_nodes = []  # Lista de tuples (process, port)
+insult_nodes = []  # Lista de tuplas (process, port)
+filter_nodes = []  # Lista de tuplas (process, port)
 
-# Flags de control
+# Noleanos de control
 running = True
 load_generators_running = True
 
@@ -56,6 +56,7 @@ def signal_handler(sig, frame):
     cleanup_processes()
     sys.exit(0)
 
+# Vacia las listas de procesos activos, insult_nodes y filter_nodes, y los termina
 def cleanup_processes():
     print("[INFO] Terminando procesos nodos...")
     for p, _ in insult_nodes + filter_nodes:
@@ -68,12 +69,14 @@ def cleanup_processes():
     filter_nodes.clear()
     print("[INFO] Todos los procesos nodos terminados.")
 
+# Ejecuta un proceso por un puerto determinado
 def start_node(script_path, port):
     proc = subprocess.Popen([sys.executable, script_path, str(port)])
-    time.sleep(5)  # Espera para que el nodo arranque bien
+    time.sleep(5)
     print(f"[INFO] Nodo lanzado: {script_path} en puerto {port}, PID={proc.pid}")
     return proc
 
+# Detiene un solo proceso, el
 def stop_node(process_tuple):
     proc, port = process_tuple
     if proc.poll() is None:
@@ -86,11 +89,12 @@ def stop_node(process_tuple):
             print(f"[WARN] Nodo PID={proc.pid} puerto={port} no respondió, matándolo.")
             proc.kill()
 
+# Ejecuta más nodos, o termina algunos, dependiendo de la necesidad en ese momento
 def scale_nodes(current_nodes, target_count, script_path, base_port):
     current_count = len(current_nodes)
     if target_count > current_count:
         for i in range(current_count, target_count):
-            port = base_port + 2*i  # Puertos alternos para evitar conflictos
+            port = base_port + 2 * i  # Utilizamos puertos alternos
             proc = start_node(script_path, port)
             current_nodes.append((proc, port))
     elif target_count < current_count:
@@ -98,8 +102,8 @@ def scale_nodes(current_nodes, target_count, script_path, base_port):
             proc_tuple = current_nodes.pop()
             stop_node(proc_tuple)
 
+# Envia carga de trabajo al InsultService variando esta aleatoriamente a lo largo del tiempo
 def load_generator_insult(rate_per_sec):
-    """Generador de carga para InsultService con intervalo aleatorio ±30%."""
     global load_generators_running, insult_requests_count
 
     insults_sample = ["idiota", "tonto", "burro", "payaso", "torpe"]
@@ -122,11 +126,11 @@ def load_generator_insult(rate_per_sec):
         except Exception as e:
             print(f"[ERROR] InsultService XMLRPC puerto {port}: {e}")
 
-        jitter = random.uniform(0.7, 1.3)
+        jitter = random.uniform(1, 3)
         time.sleep(base_interval * jitter)
 
+# Envia carga de trabajo al InsultFilter variando esta aleatoriamente a lo largo del tiempo
 def load_generator_text(rate_per_sec):
-    """Generador de carga para InsultFilter con intervalo aleatorio ±30%."""
     global load_generators_running, filter_requests_count
 
     texts_sample = [
@@ -155,11 +159,11 @@ def load_generator_text(rate_per_sec):
         except Exception as e:
             print(f"[ERROR] InsultFilter XMLRPC puerto {port}: {e}")
 
-        jitter = random.uniform(0.7, 1.3)
+        jitter = random.uniform(1, 3)
         time.sleep(base_interval * jitter)
 
+# Calcula la lambda (peticiones enviadas) en tiempo real para el calculo de nodos
 def measure_lambda_real():
-    """Calcula la tasa real de peticiones por segundo en el último intervalo."""
     global insult_requests_count, filter_requests_count
     with count_lock:
         insult_count = insult_requests_count
@@ -170,6 +174,7 @@ def measure_lambda_real():
     lam_filter = filter_count / MEASURE_INTERVAL
     return lam_insult, lam_filter
 
+# Ejecuta los tests con el numero de threads que le correspinde a cada uno, guarda resultados, y monitoriza el numero de nodos necesarios
 def test_scaling():
     global running, load_generators_running
 
@@ -190,7 +195,7 @@ def test_scaling():
 
     start_time = time.time()
 
-    with open("XMLRPC/Dynamic/scaling_log.txt", "w") as log_file:
+    with open("XMLRPC/Dynamic/test_results_d.txt", "w") as log_file:
         log_file.write("=== Test de escalado dinámico XMLRPC iniciado ===\n\n")
         log_file.flush()
 
@@ -199,7 +204,7 @@ def test_scaling():
 
             lam_insult, lam_filter = measure_lambda_real()
 
-            # Cálculo nodos necesarios con fórmula
+            # Cálculo nodos necesarios con la fórmula que nos dan
             nodos_insult = math.ceil(lam_insult * T_INSULT / C_INSULT)
             nodos_filter = math.ceil(lam_filter * T_FILTER / C_FILTER)
             nodos_insult = max(1, nodos_insult)
@@ -253,6 +258,7 @@ def test_scaling():
         t.join()
     cleanup_processes()
 
+# Programa principal
 if __name__ == "__main__":
     signal.signal(signal.SIGINT, signal_handler)
     print("[INFO] Iniciando test de escalado dinámico XMLRPC con múltiples procesos generadores de carga.")

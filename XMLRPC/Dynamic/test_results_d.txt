@@ -1,0 +1,35 @@
+=== Test de escalado dinámico XMLRPC iniciado ===
+
+[16:33:17] InsultService:
+  - Carga medida (lambda): 0.00 pet/s
+  - Fórmula usada: nodos = ceil(lambda * T / C) = ceil(0.00 * 2 / 0.5) = 1
+  - Nodos actuales: 0
+  - Nodos requeridos: 1 => Se decide aumentar nodos
+
+[16:33:17] InsultFilter:
+  - Carga medida (lambda): 0.00 pet/s
+  - Fórmula usada: nodos = ceil(lambda * T / C) = ceil(0.00 * 2 / 0.5) = 1
+  - Nodos actuales: 0
+  - Nodos requeridos: 1 => Se decide aumentar nodos
+
+[16:33:17] Estado post-escalado:
+  - InsultService nodos activos: 1
+  - InsultFilter nodos activos: 1
+
+[16:33:30] InsultService:
+  - Carga medida (lambda): 0.67 pet/s
+  - Fórmula usada: nodos = ceil(lambda * T / C) = ceil(0.67 * 2 / 0.5) = 3
+  - Nodos actuales: 1
+  - Nodos requeridos: 3 => Se decide aumentar nodos
+
+[16:33:30] InsultFilter:
+  - Carga medida (lambda): 0.33 pet/s
+  - Fórmula usada: nodos = ceil(lambda * T / C) = ceil(0.33 * 2 / 0.5) = 2
+  - Nodos actuales: 1
+  - Nodos requeridos: 2 => Se decide aumentar nodos
+
+[16:33:30] Estado post-escalado:
+  - InsultService nodos activos: 3
+  - InsultFilter nodos activos: 2
+
+=== Test finalizado ===
